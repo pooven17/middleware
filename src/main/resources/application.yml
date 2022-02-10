@@ -1,0 +1,18 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: Middleware
+  security:
+    oauth2:
+      client:
+        registration:
+          middleware:
+            authorization-grant-type: client_credentials
+            client-id: client-id
+            client-secret: client-secret
+            user-info-authentication-method: header
+        provider:
+          middleware:
+            token-uri: https://localhost:9091/oauth/token
