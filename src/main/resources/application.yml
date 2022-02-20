@@ -1,0 +1,36 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: Middleware
+  security:
+    oauth2:
+      client:
+        registration:
+          middleware:
+            authorization-grant-type: client_credentials
+            client-id: client-id
+            client-secret: client-secret
+            user-info-authentication-method: header
+        provider:
+          middleware:
+            token-uri: https://localhost:9091/oauth/token
+  cloud:
+    stream:
+      bindings:
+        onReceive-in-0:
+          destination: middlware.process
+          binder: local_rabbit
+          group: consumer
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
