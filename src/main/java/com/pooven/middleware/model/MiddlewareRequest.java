@@ -1,7 +1,5 @@
 package com.pooven.middleware.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,15 +7,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Middleware {
+public class MiddlewareRequest {
 
 	private String id;
 
 	private String name;
 
 	private Address address;
-	
-	//@JsonIgnore
+
+	// @JsonIgnore
 	private boolean isPatch;
 
 	@Data
@@ -26,15 +24,6 @@ public class Middleware {
 	public static class Address {
 		private String addressLine1;
 		private String addressLine2;
-	}
-	
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class Organization {
-		private String id;
-		private String code;
-		private boolean delete;
 	}
 
 }

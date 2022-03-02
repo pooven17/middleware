@@ -3,7 +3,8 @@ package com.pooven.middleware.service;
 import org.springframework.stereotype.Service;
 
 import com.pooven.middleware.model.EventData;
-import com.pooven.middleware.model.Middleware;
+import com.pooven.middleware.model.MiddlewareRequest;
+import com.pooven.middleware.model.MiddlewareResponse;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -24,7 +25,7 @@ public class MiddlewareService {
 		if (isValid(eventData)) {
 			log.info("*****************Valid*****************");
 			// @formatter:off
-			return middlewareClient.getAccessToken(eventData.getId())
+			return middlewareClient.getAccessToken()
 					.flatMap(token -> middlewareClient.getMiddleware(token, eventData.getId())
 					.flatMap(middlewareResp -> buildMiddleware(middlewareResp, eventData))
 					.flatMap(newMiddleware -> middlewareClient.saveMiddleware(token, newMiddleware)))
@@ -34,17 +35,17 @@ public class MiddlewareService {
 		return Mono.just(eventData);
 	}
 
-	private Mono<Middleware> buildMiddleware(Middleware middlewareResp, EventData eventData) {
+	private Mono<MiddlewareRequest> buildMiddleware(MiddlewareResponse middlewareResp, EventData eventData) {
 		log.info("*****************buildMiddleware-{}*****************", (middlewareResp == null));
 		boolean patch = false;
 		if(middlewareResp != null && middlewareResp.getId() != null) {
 			patch = true;
-			return Mono.just(new Middleware(eventData.getId(), eventData.getName(), null, patch));
+			return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, patch));
 		}
-		return Mono.just(new Middleware(eventData.getId(), eventData.getName(), null, patch));
+		return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, patch));
 	}
 
-	private Mono<EventData> returnEventData(Middleware middlewareResp, EventData eventData) {
+	private Mono<EventData> returnEventData(MiddlewareResponse middlewareResp, EventData eventData) {
 		log.info("*****************returnEventData-{}*****************",middlewareResp);
 		return Mono.just(eventData);
 	}

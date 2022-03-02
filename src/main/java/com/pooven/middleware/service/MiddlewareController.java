@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.pooven.middleware.model.Middleware;
-import com.pooven.middleware.model.Token;
+import com.pooven.middleware.model.AccessToken;
+import com.pooven.middleware.model.MiddlewareResponse;
+import com.pooven.middleware.model.Organization;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,30 +20,39 @@ import lombok.extern.slf4j.Slf4j;
 public class MiddlewareController {
 
 	@GetMapping("/accessToken")
-	public Token getAccessToken() {
+	public AccessToken getAccessToken() {
 		log.info("*****************API-getAccessToken*****************");
-		return new Token("AccessToken");
+		return new AccessToken("AccessToken");
 	}
 
 	@GetMapping("/getMiddleware/{id}")
-	public Middleware getMiddleware(@PathVariable(name = "id") String id) {
+	public MiddlewareResponse getMiddleware(@PathVariable(name = "id") String id) {
 		log.info("*****************API-getMiddleware-{}*****************", id);
 		if (id.equals("404")) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
 		}
-		return new Middleware(id, id, null, true);
+		return new MiddlewareResponse(id, id, null);
+	}
+	
+	@GetMapping("/getOrganization/{id}")
+	public Organization getOrganization(@PathVariable(name = "id") String id) {
+		log.info("*****************API-getMiddleware-{}*****************", id);
+		if (id.equals("404")) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+		}
+		return new Organization(id, id, false);
 	}
 
 	@PostMapping("/saveMiddleware")
-	public Middleware saveMiddleware(@RequestBody Middleware middleware) {
+	public MiddlewareResponse saveMiddleware(@RequestBody MiddlewareResponse middleware) {
 		log.info("*****************API-saveMiddleware-{}*****************", middleware);
-		return new Middleware(middleware.getId(), middleware.getName(), null, true);
+		return new MiddlewareResponse(middleware.getId(), middleware.getName(), null);
 	}
 
 	@PatchMapping("/saveMiddleware")
-	public Middleware updateMiddleware(@RequestBody Middleware middleware) {
+	public MiddlewareResponse updateMiddleware(@RequestBody MiddlewareResponse middleware) {
 		log.info("*****************API-updateMiddleware-{}*****************", middleware.getId());
-		return new Middleware(middleware.getId(), middleware.getName(), null, true);
+		return new MiddlewareResponse(middleware.getId(), middleware.getName(), null);
 	}
 
 }
