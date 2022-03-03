@@ -2,14 +2,13 @@ package com.pooven.middleware;
 
 import java.util.function.Consumer;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.server.UnAuthenticatedServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -84,6 +83,11 @@ public class MiddlewareConfig {
 	@Bean
 	WebClient webClient() {
 		return WebClient.builder().build();
+	}
+
+	@Bean
+	public Validator getValidator() {
+		return Validation.buildDefaultValidatorFactory().getValidator();
 	}
 
 }
