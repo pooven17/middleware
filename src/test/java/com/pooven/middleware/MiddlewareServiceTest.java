@@ -83,9 +83,36 @@ public class MiddlewareServiceTest {
 	}
 	
 	@Test
-	public void triggerForValidEvent() {
+	public void triggerForValidNewUser() {
 		when(logService.builder(anyString())).thenReturn(logBuilder);
-		when(logBuilder.data(anyMap())).thenReturn(logBuilder);
+//		when(logBuilder.data(anyMap())).thenReturn(logBuilder);
+//		when(logBuilder.level(any(Level.class))).thenReturn(logBuilder);
+		MiddlewareService service = new MiddlewareService(middlewareClient, logService, validator);
+		EventData eventData = new EventData();
+		eventData.setId("id");
+		eventData.setName("name");
+		AccessToken accessToken = new AccessToken();
+		accessToken.setAccessToken("dumy_access_token");
+		MiddlewareResponse middlewareResponse = new MiddlewareResponse();
+		MiddlewareResponse middlewareResponse2 = new MiddlewareResponse();
+		middlewareResponse2.setId("id");
+		middlewareResponse2.setName("name");
+		MiddlewareRequest middlewareRequest = new MiddlewareRequest();
+		middlewareRequest.setId("id");
+		middlewareRequest.setName("name");
+		given(middlewareClient.getAccessToken()).willReturn(Mono.just(accessToken));
+		given(middlewareClient.getMiddleware(accessToken, "id")).willReturn(Mono.just(middlewareResponse));
+		given(middlewareClient.saveMiddleware(accessToken, middlewareRequest)).willReturn(Mono.just(middlewareResponse2));
+		EventData result = service.trigger(eventData).block();
+		Assert.assertEquals(eventData, result);
+		verify(logBuilder, times(5)).log();
+	}
+
+	
+	@Test
+	public void triggerForValidPatchUser() {
+		when(logService.builder(anyString())).thenReturn(logBuilder);
+//		when(logBuilder.data(anyMap())).thenReturn(logBuilder);
 //		when(logBuilder.level(any(Level.class))).thenReturn(logBuilder);
 		MiddlewareService service = new MiddlewareService(middlewareClient, logService, validator);
 		EventData eventData = new EventData();
