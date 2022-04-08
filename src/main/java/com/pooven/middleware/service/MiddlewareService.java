@@ -23,9 +23,9 @@ import reactor.core.publisher.Mono;
 public class MiddlewareService {
 
 	private MiddlewareClient middlewareClient;
-	
+
 	private LoggerService logService;
-	
+
 	private Validator validator;
 
 	public MiddlewareService(MiddlewareClient middlewareClient, LoggerService logService, Validator validator) {
@@ -52,11 +52,11 @@ public class MiddlewareService {
 	private Mono<MiddlewareRequest> buildMiddleware(MiddlewareResponse middlewareResp, EventData eventData) {
 		logService.builder("*****************buildMiddleware-{}*****************").log();
 		boolean patch = false;
-		if(middlewareResp != null && middlewareResp.getId() != null) {
+		if (middlewareResp != null && middlewareResp.getId() != null) {
 			patch = true;
-			return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, patch));
+			return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, null, patch));
 		}
-		return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, patch));
+		return Mono.just(new MiddlewareRequest(eventData.getId(), eventData.getName(), null, null, patch));
 	}
 
 	private Mono<EventData> returnEventData(MiddlewareResponse middlewareResp, EventData eventData) {
@@ -66,7 +66,7 @@ public class MiddlewareService {
 
 	private boolean isValid(EventData eventData) {
 		logService.builder("*****************isValid*****************").log();
-		if(eventData == null) {
+		if (eventData == null) {
 			return false;
 		}
 		List<ErrorVO> errorList = Optional.ofNullable(validator.validate(eventData))

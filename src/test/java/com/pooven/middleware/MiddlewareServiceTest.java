@@ -99,7 +99,7 @@ public class MiddlewareServiceTest {
 		middlewareResponse2.setName("name");
 		MiddlewareRequest middlewareRequest = new MiddlewareRequest();
 		middlewareRequest.setId("id");
-		middlewareRequest.setName("name");
+		middlewareRequest.setNames("name");
 		given(middlewareClient.getAccessToken()).willReturn(Mono.just(accessToken));
 		given(middlewareClient.getMiddleware(accessToken, "id")).willReturn(Mono.just(middlewareResponse));
 		given(middlewareClient.saveMiddleware(accessToken, middlewareRequest)).willReturn(Mono.just(middlewareResponse2));
@@ -124,7 +124,7 @@ public class MiddlewareServiceTest {
 		middlewareResponse.setId("id");
 		MiddlewareRequest middlewareRequest = new MiddlewareRequest();
 		middlewareRequest.setId("id");
-		middlewareRequest.setName("name");
+		middlewareRequest.setNames("name");
 		middlewareRequest.setPatch(true);
 		given(middlewareClient.getAccessToken()).willReturn(Mono.just(accessToken));
 		given(middlewareClient.getMiddleware(accessToken, "id")).willReturn(Mono.just(middlewareResponse));

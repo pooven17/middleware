@@ -11,7 +11,9 @@ public class MiddlewareRequest {
 
 	private String id;
 
-	private String name;
+	private String names;
+	
+	private Name name;
 
 	private Address address;
 
@@ -24,6 +26,15 @@ public class MiddlewareRequest {
 	public static class Address {
 		private String addressLine1;
 		private String addressLine2;
+	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class Name {
+		private String type;
+		private String firstName;
+		private String lastName;
 	}
 
 }
