@@ -1,9 +1,13 @@
 package com.pooven.middleware.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
+
+import org.springframework.util.StringUtils;
 
 import com.pooven.middleware.model.EventData;
 import com.pooven.middleware.model.EventData.Address;
@@ -32,6 +36,19 @@ public class Utility {
 		if (preferedAddr != null) {
 			MiddlewareRequest.Address reqAddr = new MiddlewareRequest.Address(preferedAddr.getAddressLine1(),
 					preferedAddr.getAddressLine2());
+		}
+
+	}
+
+	private static Date convertStrToDate(String dateStr) {
+		if (StringUtils.isEmpty(dateStr)) {
+			return null;
+		}
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			return dateFormatter.parse(dateStr);
+		} catch (Exception exp) {
+			return null;
 		}
 
 	}
